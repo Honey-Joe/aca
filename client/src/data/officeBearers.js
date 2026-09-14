@@ -49,7 +49,7 @@ export const officeBearers = [
 
   // 03. OVERALL COORDINATOR — 2
   { id: 5,  domain: 'Overall Coordinator', position: 'Overall Coordinator', name: 'Umamaheswaran S',       registerNumber: '2025178046', className: 'MCA (R)',  image: '/images/members/member-05.jpg', description: 'Overall Coordinator responsible for coordinating initiatives and ensuring collaboration across the association.' },
-  { id: 6,  domain: 'Overall Coordinator', position: 'Overall Coordinator', name: 'Senthilkumar D',        registerNumber: '2025179044', className: 'MCA (SS)', image: '/images/members/member-06.jpg', description: 'Overall Coordinator supporting the planning, execution, and coordination of ACA activities.' },
+  { id: 6,  domain: 'Overall Coordinator', position: 'Overall Coordinator', name: 'Senthilkumar D',        registerNumber: '2025179044', className: 'MCA (SS)', image: 'https://ik.imagekit.io/HoneyJoe/Senthilkumar_overall%20co-ordinator.png', description: 'Overall Coordinator supporting the planning, execution, and coordination of ACA activities.' },
 
   // 04. TREASURER — 2
   { id: 7,  domain: 'Treasurer',           position: 'Treasurer',           name: 'Sowthamini G',          registerNumber: '2025179057', className: 'MCA (SS)', image: 'https://ik.imagekit.io/HoneyJoe/drive-download-20260914T095007Z-1-001/Sowthamini_Treasurer_MCASS.jpg', description: 'Treasurer supporting the financial administration and responsible management of ACA activities.' },
@@ -85,7 +85,7 @@ export const officeBearers = [
 
   // 11. PHOTOGRAPHY — 2
   { id: 25, domain: 'Photography',         position: 'Photography',         name: 'Srisuganandan K',       registerNumber: '2025178002', className: 'MCA (R)',  image: 'https://ik.imagekit.io/HoneyJoe/drive-download-20260914T095007Z-1-001/Suga_Photography_MCARegular.jpg', description: 'Photography team member documenting ACA activities and preserving important moments through visual storytelling.' },
-  { id: 26, domain: 'Photography',         position: 'Photography',         name: 'Syed Bahudadeer',       registerNumber: '2025179058', className: 'MCA (SS)', image: '/images/members/member-26.jpg', description: 'Photography team member capturing and documenting ACA activities and events.' },
+  { id: 26, domain: 'Photography',         position: 'Photography',         name: 'Syed Bahudadeer',       registerNumber: '2025179058', className: 'MCA (SS)', image: 'https://ik.imagekit.io/HoneyJoe/SyedBahudadeer_Photographer_MCA(SS).jpg', description: 'Photography team member capturing and documenting ACA activities and events.' },
 
   // 12. HOSPITALITY — 2
   { id: 27, domain: 'Hospitality',         position: 'Hospitality',         name: 'Madhura VM',            registerNumber: '2025178010', className: 'MCA (R)',  image: 'https://ik.imagekit.io/HoneyJoe/drive-download-20260914T095007Z-1-001/Madhura_Hospitality_Regular.jpg', description: 'Hospitality team member supporting guest and participant arrangements during ACA activities.' },

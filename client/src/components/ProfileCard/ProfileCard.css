@@ -230,21 +230,11 @@
 }
 
 .pc-glare {
-  transform: translate3d(0, 0, 1.1px);
-  overflow: hidden;
-  background-image: radial-gradient(
-    farthest-corner circle at var(--pointer-x) var(--pointer-y),
-    hsl(248, 25%, 80%) 12%,
-    hsla(207, 40%, 30%, 0.8) 90%
-  );
-  mix-blend-mode: overlay;
-  filter: brightness(0.8) contrast(1.2);
-  z-index: 4;
+  display: none;
 }
 
 .pc-avatar-content {
-  mix-blend-mode: luminosity;
-  overflow: visible;
+  overflow: hidden;
   transform: translateZ(2);
   backface-visibility: hidden;
 }
@@ -364,7 +354,6 @@
     0.1px
   );
   z-index: 5;
-  mix-blend-mode: luminosity;
 }
 
 .pc-details {
@@ -383,11 +372,7 @@
   margin: 0;
   font-size: 1.1em;
   line-height: 1.2;
-  background-image: linear-gradient(to bottom, #fff, #a0a0d0);
-  background-size: 1em 1.5em;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  -webkit-background-clip: text;
+  color: #ffffff;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -400,11 +385,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  background-image: linear-gradient(to bottom, #ccc, #7070b0);
-  background-size: 1em 1.5em;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  -webkit-background-clip: text;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 @keyframes glow-bg {
