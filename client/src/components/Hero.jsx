@@ -61,7 +61,7 @@ export default function Hero() {
         <div ref={badgeRef} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-sm mb-8"
           style={{ borderColor: 'rgba(158,55,58,0.4)', backgroundColor: 'rgba(158,55,58,0.12)', color: '#e8a0a2' }}>
           <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: '#9e373a' }} />
-          Academic Year 2024–25
+          Academic Year 2025-26
         </div>
 
         <div ref={titleRef}>
