@@ -62,7 +62,7 @@ export const officeBearers = [
 
   // 06. DESIGN — 3
   { id: 12, domain: 'Design',              position: 'Design',              name: 'Leander Bertie',      registerNumber: '2025179018', className: 'MCA (SS)', image: 'https://ik.imagekit.io/HoneyJoe/drive-download-20260914T095007Z-1-001/leander%20bertie(design).jpg', description: 'Design team member contributing to the creative and visual communication initiatives of ACA.' },
-  { id: 13, domain: 'Design',              position: 'Design',              name: 'Mohamed Mufid K T',     registerNumber: '2025179020', className: 'MCA (SS)', image: '/images/members/member-13.jpg', description: 'Design team member supporting the creation of visual content and creative materials for ACA activities.' },
+  { id: 13, domain: 'Design',              position: 'Design',              name: 'Mohamed Mufid K T',     registerNumber: '2025179020', className: 'MCA (SS)', image: 'https://ik.imagekit.io/HoneyJoe/drive-download-20260914T095007Z-1-001/WhatsApp%20Image%202026-09-14%20at%2010.59.57%20PM%20(1).jpeg', description: 'Design team member supporting the creation of visual content and creative materials for ACA activities.' },
   { id: 14, domain: 'Design',              position: 'Design',              name: 'Saishree G',            registerNumber: '2025179011', className: 'MCA (SS)', image: 'https://ik.imagekit.io/HoneyJoe/Saishree_Design%20(1).png', description: "Design team member contributing to ACA's visual presentation and creative initiatives." },
 
   // 07. ALUMNI RELATION — 3
