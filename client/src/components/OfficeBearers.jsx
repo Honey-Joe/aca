@@ -1,29 +1,28 @@
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { officeBearers, DOMAIN_ORDER, DOMAIN_IDENTITY } from '../data/officeBearers';
+import { officeBearers, getGroupedDomains, DOMAIN_ORDER, DOMAIN_IDENTITY } from '../data/officeBearers';
 import ProfileCard from './ProfileCard/ProfileCard';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const TOTAL = officeBearers.length; // 33
-const PX_PER_MEMBER = 900;          // scroll px per member beat
-const CARD_W = 220;                 // card wrapper width px
+const TOTAL_DOMAINS = DOMAIN_ORDER.length; // 13
+const PX_PER_DOMAIN = 1500;               // vertical scroll px per domain beat
 
-const DOMAIN_CARD_THEME = {
-  'Chair Person':        { glow: 'rgba(158,55,58,0.72)',  inner: 'linear-gradient(145deg,#9e373a55 0%,#c0565a33 100%)' },
-  'General Secretary':   { glow: 'rgba(43,95,131,0.72)',  inner: 'linear-gradient(145deg,#2b5f8355 0%,#3d7aa833 100%)' },
-  'Overall Coordinator': { glow: 'rgba(109,76,158,0.72)', inner: 'linear-gradient(145deg,#6d4c9e55 0%,#9370cc33 100%)' },
-  'Treasurer':           { glow: 'rgba(43,122,95,0.72)',  inner: 'linear-gradient(145deg,#2b7a5f55 0%,#3da88233 100%)' },
-  'TechOps':             { glow: 'rgba(26,107,138,0.72)', inner: 'linear-gradient(145deg,#1a6b8a55 0%,#2a8fb033 100%)' },
-  'Design':              { glow: 'rgba(138,58,107,0.72)', inner: 'linear-gradient(145deg,#8a3a6b55 0%,#b0509033 100%)' },
-  'Alumni Relation':     { glow: 'rgba(122,96,32,0.72)',  inner: 'linear-gradient(145deg,#7a602055 0%,#a8803033 100%)' },
-  'HR and PR':           { glow: 'rgba(43,95,131,0.72)',  inner: 'linear-gradient(145deg,#2b5f8355 0%,#3d7aa833 100%)' },
-  'Logistics':           { glow: 'rgba(74,107,43,0.72)',  inner: 'linear-gradient(145deg,#4a6b2b55 0%,#6a904033 100%)' },
-  'Reports':             { glow: 'rgba(107,43,43,0.72)',  inner: 'linear-gradient(145deg,#6b2b2b55 0%,#9e373a33 100%)' },
-  'Photography':         { glow: 'rgba(43,74,122,0.72)',  inner: 'linear-gradient(145deg,#2b4a7a55 0%,#3d6aaa33 100%)' },
-  'Hospitality':         { glow: 'rgba(122,58,43,0.72)',  inner: 'linear-gradient(145deg,#7a3a2b55 0%,#a8603033 100%)' },
-  'Events':              { glow: 'rgba(158,55,58,0.72)',  inner: 'linear-gradient(145deg,#9e373a55 0%,#c0565a33 100%)' },
+const DOMAIN_GLOW = {
+  'Chair Person':        'rgba(158,55,58,0.72)',
+  'General Secretary':   'rgba(43,95,131,0.72)',
+  'Overall Coordinator': 'rgba(109,76,158,0.72)',
+  'Treasurer':           'rgba(43,122,95,0.72)',
+  'TechOps':             'rgba(26,107,138,0.72)',
+  'Design':              'rgba(138,58,107,0.72)',
+  'Alumni Relation':     'rgba(122,96,32,0.72)',
+  'HR and PR':           'rgba(43,95,131,0.72)',
+  'Logistics':           'rgba(74,107,43,0.72)',
+  'Reports':             'rgba(107,43,43,0.72)',
+  'Photography':         'rgba(43,74,122,0.72)',
+  'Hospitality':         'rgba(122,58,43,0.72)',
+  'Events':              'rgba(158,55,58,0.72)',
 };
 
 const AVATAR_GRADIENTS = [
@@ -36,8 +35,6 @@ const AVATAR_GRADIENTS = [
   'linear-gradient(135deg,#7a6020,#a88030)',
   'linear-gradient(135deg,#4a6b2b,#6a9040)',
 ];
-
-const ICON_PATTERN_URL = '/assets/demo/iconpattern.png';
 
 function makeInitialsAvatar(name, gradient) {
   const initials = name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
@@ -55,34 +52,40 @@ function makeInitialsAvatar(name, gradient) {
 }
 
 // ─── Reduced-motion fallback ──────────────────────────────────────────────────
-function ReducedMotionFallback() {
+function ReducedMotionFallback({ domains }) {
   return (
     <section id="bearers" className="py-24 px-4" style={{ background: '#0d0d14' }}>
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <span className="text-sm font-semibold uppercase tracking-widest block mb-3" style={{ color: '#2b5f83' }}>Leadership</span>
           <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4" style={{ fontFamily: 'Space Grotesk' }}>
             Office <span className="bg-clip-text text-transparent" style={{ backgroundImage: 'linear-gradient(90deg,#9e373a,#2b5f83)' }}>Bearers</span>
           </h2>
-          <div className="w-16 h-1 mx-auto rounded-full" style={{ background: 'linear-gradient(90deg,#9e373a,#2b5f83)' }} />
         </div>
-        <div className="flex flex-wrap justify-center gap-6">
-          {officeBearers.map((m, i) => {
-            const theme = DOMAIN_CARD_THEME[m.domain];
-            const gradient = AVATAR_GRADIENTS[i % AVATAR_GRADIENTS.length];
-            return (
-              <div key={m.id} style={{ width: CARD_W }}>
-                <ProfileCard
-                  name={m.name} title={m.position} handle={m.registerNumber}
-                  status={m.className} avatarUrl={m.image || makeInitialsAvatar(m.name, gradient)}
-                  showUserInfo enableTilt enableMobileTilt={false}
-                  behindGlowEnabled behindGlowColor={theme.glow}
-                  innerGradient={theme.inner} iconUrl={ICON_PATTERN_URL}
-                />
-              </div>
-            );
-          })}
-        </div>
+        {domains.map(({ domain, identity, members }, dIdx) => (
+          <div key={domain} className="mb-16">
+            <div className="flex items-center gap-3 mb-6 pb-3 border-b border-white/10">
+              <span className="text-2xl">{identity.icon}</span>
+              <h3 className="text-xl font-bold" style={{ fontFamily: 'Space Grotesk', color: identity.accent }}>{domain}</h3>
+            </div>
+            <div className="flex flex-wrap justify-center gap-5">
+              {members.map((m, i) => {
+                const gradient = AVATAR_GRADIENTS[(dIdx * 3 + i) % AVATAR_GRADIENTS.length];
+                return (
+                  <div key={m.id} style={{ width: CARD_W }}>
+                    <ProfileCard
+                      name={m.name} title={m.position} handle={m.registerNumber}
+                      status={m.className} avatarUrl={m.image || makeInitialsAvatar(m.name, gradient)}
+                      showUserInfo enableTilt enableMobileTilt={false}
+                      behindGlowEnabled behindGlowColor='none'
+                      innerGradient="none" iconUrl=""
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );
@@ -93,29 +96,39 @@ export default function OfficeBearers() {
   const prefersReducedMotion =
     typeof window !== 'undefined' &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (prefersReducedMotion) return <ReducedMotionFallback />;
-  return <CinematicBearers />;
+  const domains = getGroupedDomains();
+  if (prefersReducedMotion) return <ReducedMotionFallback domains={domains} />;
+  return <CinematicBearers domains={domains} />;
 }
 
-// ─── Cinematic per-member experience ─────────────────────────────────────────
-function CinematicBearers() {
-  const wrapperRef   = useRef(null);
-  const stickyRef    = useRef(null);
-  const bgGlowRef    = useRef(null);
-  const cardElsRef   = useRef([]);   // one ref per member card wrapper
-  const progressRef  = useRef(null);
-  const memberNumRef = useRef(null);
-  const domainLblRef = useRef(null);
+// ─── Cinematic domain-based horizontal reveal ─────────────────────────────────
+function CinematicBearers({ domains }) {
+  const wrapperRef    = useRef(null);
+  const stickyRef     = useRef(null);
+  const bgGlowRef     = useRef(null);
+  const titleElsRef   = useRef([]);  // domain title divs
+  const rowElsRef     = useRef([]);  // card row strip divs
+  const progressRef   = useRef(null);
+  const domainNumRef  = useRef(null);
+  const domainLblRef  = useRef(null);
 
-  const [activeIdx, setActiveIdx] = useState(0);
+  const [activeDomainIdx, setActiveDomainIdx] = useState(0);
 
-  const totalScrollPx = TOTAL * PX_PER_MEMBER;
+  const totalScrollPx = TOTAL_DOMAINS * PX_PER_DOMAIN;
 
   useEffect(() => {
+    const vw = window.innerWidth;
+    const isMobile = vw < 640;
+    const CARD_W   = isMobile ? Math.min(130, Math.floor(vw * 0.36)) : 200;
+    const CARD_GAP = isMobile ? 16 : 32;
+
     const ctx = gsap.context(() => {
-      // Hide all cards initially
-      cardElsRef.current.forEach(el => {
-        if (el) gsap.set(el, { opacity: 0, y: 60, scale: 0.88 });
+      // ── Initial states ──
+      titleElsRef.current.forEach(el => {
+        if (el) gsap.set(el, { opacity: 0, y: 30 });
+      });
+      rowElsRef.current.forEach(el => {
+        if (el) gsap.set(el, { opacity: 0, x: vw * 0.6 });
       });
 
       const tl = gsap.timeline({
@@ -130,62 +143,62 @@ function CinematicBearers() {
             if (progressRef.current)
               progressRef.current.style.width = `${self.progress * 100}%`;
 
-            const idx = Math.min(Math.floor(self.progress * TOTAL), TOTAL - 1);
-            const m = officeBearers[idx];
+            const dIdx = Math.min(
+              Math.floor(self.progress * TOTAL_DOMAINS),
+              TOTAL_DOMAINS - 1
+            );
+            const identity = DOMAIN_IDENTITY[DOMAIN_ORDER[dIdx]];
 
-            if (memberNumRef.current)
-              memberNumRef.current.textContent = `${idx + 1} / ${TOTAL}`;
+            if (domainNumRef.current)
+              domainNumRef.current.textContent =
+                `${String(dIdx + 1).padStart(2, '0')} / ${String(TOTAL_DOMAINS).padStart(2, '0')}`;
             if (domainLblRef.current)
-              domainLblRef.current.textContent = m.domain;
+              domainLblRef.current.textContent = DOMAIN_ORDER[dIdx];
 
-            setActiveIdx(idx);
-
-            // Update background glow color
-            if (bgGlowRef.current) {
-              const identity = DOMAIN_IDENTITY[m.domain];
+            if (bgGlowRef.current)
               bgGlowRef.current.style.background =
-                `radial-gradient(ellipse 60% 50% at 50% 50%, ${identity.glow.replace('0.18', '0.22')}, transparent 70%)`;
-            }
+                `radial-gradient(ellipse 70% 55% at 50% 50%, ${identity.glow.replace('0.18', '0.2')}, transparent 70%)`;
+
+            setActiveDomainIdx(dIdx);
           },
         },
       });
 
       let cursor = 0;
 
-      officeBearers.forEach((member, idx) => {
-        const el     = cardElsRef.current[idx];
-        const nextEl = cardElsRef.current[idx + 1];
+      domains.forEach(({ domain, identity, members }, dIdx) => {
+        const titleEl     = titleElsRef.current[dIdx];
+        const rowEl       = rowElsRef.current[dIdx];
+        const nextTitleEl = titleElsRef.current[dIdx + 1];
+        const nextRowEl   = rowElsRef.current[dIdx + 1];
 
-        // Card IN
-        tl.to(el, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: 'power3.out' }, cursor);
+        // 1. Title fades in
+        tl.to(titleEl, { opacity: 1, y: 0, duration: 0.25, ease: 'power2.out' }, cursor);
 
-        cursor += 0.5; // hold
+        cursor += 0.2; // brief title hold
 
-        // Card OUT + next card starts coming in
-        tl.to(el, { opacity: 0, y: -50, scale: 0.92, duration: 0.3, ease: 'power2.in' }, cursor);
+        // 2. Title fades out, cards slide in from right simultaneously
+        tl.to(titleEl, { opacity: 0, y: -20, duration: 0.2, ease: 'power2.in' }, cursor);
+        tl.to(rowEl,   { opacity: 1, x: 0,   duration: 0.45, ease: 'power3.out' }, cursor + 0.1);
 
-        if (nextEl) {
-          tl.fromTo(
-            nextEl,
-            { opacity: 0, y: 60, scale: 0.88 },
-            { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: 'power3.out' },
-            cursor + 0.15
-          );
+        cursor += 0.55; // cards visible — hold
+
+        cursor += 0.6;  // hold window
+
+        // 3. Cards slide out to the LEFT, next domain title comes in
+        tl.to(rowEl, { opacity: 0, x: -vw * 0.6, duration: 0.35, ease: 'power2.in' }, cursor);
+
+        if (nextTitleEl) {
+          tl.to(nextTitleEl, { opacity: 1, y: 0, duration: 0.25, ease: 'power2.out' }, cursor + 0.2);
         }
 
-        cursor += 0.45;
+        cursor += 0.4;
       });
 
     }, wrapperRef);
 
     return () => ctx.revert();
   }, []);
-
-  const domainDots = DOMAIN_ORDER.map(domain => ({
-    domain,
-    identity: DOMAIN_IDENTITY[domain],
-    firstIdx: officeBearers.findIndex(m => m.domain === domain),
-  }));
 
   return (
     <div
@@ -207,8 +220,8 @@ function CinematicBearers() {
         />
 
         {/* Background glow */}
-        <div ref={bgGlowRef} className="absolute inset-0 pointer-events-none transition-all duration-700"
-          style={{ background: 'radial-gradient(ellipse 60% 50% at 50% 50%, rgba(158,55,58,0.22), transparent 70%)' }}
+        <div ref={bgGlowRef} className="absolute inset-0 pointer-events-none"
+          style={{ background: 'radial-gradient(ellipse 70% 55% at 50% 50%, rgba(158,55,58,0.2), transparent 70%)', transition: 'background 0.6s ease' }}
         />
 
         {/* Top header */}
@@ -224,38 +237,78 @@ function CinematicBearers() {
           </div>
         </div>
 
-        {/* All member cards — stacked, GSAP controls visibility */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          {officeBearers.map((member, idx) => {
-            const theme    = DOMAIN_CARD_THEME[member.domain];
-            const gradient = AVATAR_GRADIENTS[idx % AVATAR_GRADIENTS.length];
-            const avatar   = member.image || makeInitialsAvatar(member.name, gradient);
+        {/* Domain title labels — stacked, GSAP controls */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          {domains.map(({ domain, identity }, dIdx) => (
+            <div
+              key={domain}
+              ref={el => (titleElsRef.current[dIdx] = el)}
+              className="absolute flex flex-col items-center gap-3 text-center px-6"
+              style={{ willChange: 'transform, opacity' }}
+            >
+              <span className="text-5xl">{identity.icon}</span>
+              <span className="text-xs font-bold uppercase tracking-[0.3em]" style={{ color: identity.accent }}>
+                {String(dIdx + 1).padStart(2, '0')} / {String(TOTAL_DOMAINS).padStart(2, '0')}
+              </span>
+              <h3 className="text-2xl sm:text-4xl lg:text-6xl font-bold text-white" style={{ fontFamily: 'Space Grotesk' }}>
+                {domain}
+              </h3>
+              <div className="h-px w-20 rounded-full"
+                style={{ background: `linear-gradient(90deg,transparent,${identity.accent},transparent)` }} />
+              <p className="text-xs text-gray-500">{domains[dIdx].members.length} member{domains[dIdx].members.length > 1 ? 's' : ''}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Card rows — one per domain, GSAP drives x */}
+        <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
+          {domains.map(({ domain, members }, dIdx) => {
+            const isMob    = window.innerWidth < 640;
+            const cardW    = isMob ? Math.min(130, Math.floor(window.innerWidth * 0.36)) : 350;
+            const cardGap  = isMob ? 16 : 32;
+            const count    = members.length;
+            const rowW     = count * cardW + (count - 1) * cardGap;
+            const vwPad    = isMob ? 16 : 40;
 
             return (
               <div
-                key={member.id}
-                ref={el => (cardElsRef.current[idx] = el)}
-                className="absolute"
+                key={domain}
+                ref={el => (rowElsRef.current[dIdx] = el)}
+                className="absolute flex items-center"
                 style={{
-                  width: 'min(340px, 55vw)',
+                  gap: cardGap,
+                  width: rowW > window.innerWidth - vwPad ? `calc(100vw - ${vwPad}px)` : rowW,
+                  maxWidth: `calc(100vw - ${vwPad}px)`,
+                  flexWrap: 'wrap',
+                  overflowX: rowW > window.innerWidth - vwPad ? 'auto' : 'visible',
+                  justifyContent: 'center',
+                  paddingBottom: rowW > window.innerWidth - vwPad ? 8 : 0,
                   willChange: 'transform, opacity',
                   pointerEvents: 'auto',
                 }}
               >
-                <ProfileCard
-                  name={member.name}
-                  title={member.position}
-                  handle={member.registerNumber}
-                  status={member.className}
-                  avatarUrl={avatar}
-                  showUserInfo
-                  enableTilt
-                  enableMobileTilt={false}
-                  behindGlowEnabled
-                  behindGlowColor={theme.glow}
-                  innerGradient={theme.inner}
-                  iconUrl={ICON_PATTERN_URL}
-                />
+                {members.map((member, mIdx) => {
+                  const gradient = AVATAR_GRADIENTS[(dIdx * 3 + mIdx) % AVATAR_GRADIENTS.length];
+                  const avatar   = member.image || makeInitialsAvatar(member.name, gradient);
+                  return (
+                    <div key={member.id} style={{ width: cardW, flexShrink: 0, pointerEvents: 'auto' }}>
+                      <ProfileCard
+                        name={member.name}
+                        title={member.position}
+                        handle={member.registerNumber}
+                        status={member.className}
+                        avatarUrl={avatar}
+                        showUserInfo
+                        enableTilt
+                        enableMobileTilt={false}
+                        behindGlowEnabled
+                        behindGlowColor={DOMAIN_GLOW[domain]}
+                        innerGradient="none"
+                        iconUrl=""
+                      />
+                    </div>
+                  );
+                })}
               </div>
             );
           })}
@@ -265,21 +318,13 @@ function CinematicBearers() {
         <div className="absolute bottom-6 left-0 right-0 flex flex-col items-center gap-2.5 z-20 pointer-events-none">
           <div className="flex items-center gap-5">
             <div className="text-center">
-              <p className="text-xs text-gray-600 uppercase tracking-wider">Domain</p>
+              <p ref={domainNumRef} className="text-xs font-mono font-bold text-gray-500">01 / 13</p>
               <p ref={domainLblRef} className="text-xs font-semibold uppercase tracking-widest text-gray-300 mt-0.5">
-                {officeBearers[0].domain}
-              </p>
-            </div>
-            <div className="w-px h-7 bg-white/10" />
-            <div className="text-center">
-              <p className="text-xs text-gray-600 uppercase tracking-wider">Member</p>
-              <p ref={memberNumRef} className="text-xs font-mono font-bold text-gray-300 mt-0.5">
-                1 / {TOTAL}
+                {DOMAIN_ORDER[0]}
               </p>
             </div>
           </div>
 
-          {/* Progress bar */}
           <div className="w-52 sm:w-72 h-px bg-white/10 rounded-full overflow-hidden">
             <div
               ref={progressRef}
@@ -296,10 +341,10 @@ function CinematicBearers() {
           </p>
         </div>
 
-        {/* Sidebar domain nav — desktop */}
+        {/* Sidebar domain nav */}
         <div className="absolute right-5 top-1/2 -translate-y-1/2 hidden lg:flex flex-col gap-1.5 z-20 pointer-events-none">
-          {domainDots.map(({ domain, identity, firstIdx }) => {
-            const isActive = officeBearers[activeIdx]?.domain === domain;
+          {domains.map(({ domain, identity }, dIdx) => {
+            const isActive = activeDomainIdx === dIdx;
             return (
               <div key={domain} className="flex items-center gap-2">
                 <span
@@ -318,7 +363,7 @@ function CinematicBearers() {
                   {domain}
                 </span>
                 <div
-                  className="rounded-full flex-shrink-0 transition-all duration-300"
+                  className="rounded-full shrink-0 transition-all duration-300"
                   style={{
                     width:  isActive ? 8 : 3,
                     height: isActive ? 8 : 3,
@@ -333,11 +378,11 @@ function CinematicBearers() {
         {/* Mobile domain indicator */}
         <div className="absolute top-5 right-4 lg:hidden z-20 text-right pointer-events-none">
           <p className="text-xs font-semibold uppercase tracking-wider"
-            style={{ color: DOMAIN_IDENTITY[officeBearers[activeIdx]?.domain]?.accent ?? '#9e373a' }}>
-            {officeBearers[activeIdx]?.domain}
+            style={{ color: DOMAIN_IDENTITY[DOMAIN_ORDER[activeDomainIdx]]?.accent ?? '#9e373a' }}>
+            {DOMAIN_ORDER[activeDomainIdx]}
           </p>
           <p className="text-xs text-gray-600 font-mono">
-            {String(activeIdx + 1).padStart(2, '0')} / {String(TOTAL).padStart(2, '0')}
+            {String(activeDomainIdx + 1).padStart(2, '0')} / {String(TOTAL_DOMAINS).padStart(2, '0')}
           </p>
         </div>
       </div>

@@ -58,11 +58,11 @@ export default function Hero() {
 
       {/* Content */}
       <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
-        <div ref={badgeRef} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-sm mb-8"
+        {/* <div ref={badgeRef} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-sm mb-8"
           style={{ borderColor: 'rgba(158,55,58,0.4)', backgroundColor: 'rgba(158,55,58,0.12)', color: '#e8a0a2' }}>
           <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: '#9e373a' }} />
           Academic Year 2025-26
-        </div>
+        </div> */}
 
         <div ref={titleRef}>
           <h1 className="text-5xl sm:text-6xl lg:text-8xl font-bold leading-tight" style={{ fontFamily: 'Space Grotesk' }}>

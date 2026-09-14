@@ -13,8 +13,8 @@ export default function App() {
       <main>
         <Hero />
         <About />
-        <OfficeBearers />
         <Events />
+        <OfficeBearers />
       </main>
       <Footer />
     </>

@@ -54,11 +54,11 @@
 
 .pc-card-wrapper:hover,
 .pc-card-wrapper.active {
-  --card-opacity: 1;
+  /* --card-opacity: 1; */
 }
 
 .pc-card {
-  width: 400px;
+  width: 100%;
   height: auto;
   aspect-ratio: 0.658;
   display: grid;
@@ -73,6 +73,7 @@
   background: rgba(0, 0, 0, 0.9);
   backface-visibility: hidden;
   overflow: hidden;
+  
 }
 
 .pc-card:hover,
@@ -128,7 +129,7 @@
   background: transparent;
   background-size: cover;
   background-position: center;
-  background-image:
+  /* background-image:
     repeating-linear-gradient(
       0deg,
       var(--sunpillar-clr-1) calc(var(--space) * 1),
@@ -153,7 +154,7 @@
       hsla(0, 0%, 0%, 0.1) 12%,
       hsla(0, 0%, 0%, 0.15) 20%,
       hsla(0, 0%, 0%, 0.25) 120%
-    );
+    ); */
   background-position:
     0 var(--background-y),
     var(--background-x) var(--background-y),
@@ -178,15 +179,15 @@
 
 .pc-card:hover .pc-shine,
 .pc-card.active .pc-shine {
-  filter: brightness(0.85) contrast(1.5) saturate(0.5);
-  animation-play-state: paused;
+  /* filter: brightness(0.85) contrast(1.5) saturate(0.5); */
+  /* animation-play-state: paused; */
 }
 
 .pc-card:hover .pc-shine::before,
 .pc-card.active .pc-shine::before,
 .pc-card:hover .pc-shine::after,
 .pc-card.active .pc-shine::after {
-  opacity: 1;
+  /* opacity: 1; */
 }
 
 .pc-shine::before {
@@ -338,9 +339,9 @@
 }
 
 .pc-contact-btn:hover {
-  border-color: rgba(255, 255, 255, 0.4);
+  /* border-color: rgba(255, 255, 255, 0.4);
   transform: translateY(-1px);
-  transition: all 0.2s ease;
+  transition: all 0.2s ease; */
 }
 
 .pc-content:not(.pc-avatar-content) {
