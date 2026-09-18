@@ -92,16 +92,16 @@ export default function Footer() {
             <ul className="space-y-3 text-sm text-slate-400">
               <li className="flex items-start gap-2">
                 <span className="mt-0.5">📍</span>
-                <span>Department of Computer Application,<br />College Campus, Kerala, India</span>
+                <span>Department of Information Science and Technology<br />College of Engineering Guindy , Chennai</span>
               </li>
               <li className="flex items-center gap-2">
                 <span>✉️</span>
-                <a href="mailto:aca@college.edu" className="hover:text-white transition-colors">aca@college.edu</a>
+                <a href="mailto:aca.annauniversity@gmail.com" className="hover:text-white transition-colors">aca.annauniversity@gmail.com</a>
               </li>
-              <li className="flex items-center gap-2">
+              {/* <li className="flex items-center gap-2">
                 <span>📞</span>
                 <span>+91 98765 43210</span>
-              </li>
+              </li> */}
             </ul>
           </div>
         </div>
@@ -113,7 +113,7 @@ export default function Footer() {
             Built with ❤️ by{' '}
             <span className="bg-clip-text text-transparent font-semibold"
               style={{ backgroundImage: 'linear-gradient(90deg, #9e373a, #2b5f83)' }}>
-              ACA Tech Team
+              ACA TechOps
             </span>
           </p>
         </div>
