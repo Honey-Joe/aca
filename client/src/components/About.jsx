@@ -5,7 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 const stats = [
-  { value: '500+', label: 'Active Members' },
+  { value: '200+', label: 'Active Members' },
   { value: '10+', label: 'Years of Excellence' },
   { value: '50+', label: 'Events Conducted' },
   { value: '33', label: 'Office Bearers' },
