@@ -49,14 +49,14 @@ export default function Navbar() {
           {/* Logo */}
           <div className="flex items-center gap-3 cursor-pointer" onClick={() => scrollTo('home')}>
             <div
-              className="w-9 h-9 rounded-lg flex items-center justify-center text-white font-bold text-xs"
-              style={{ background: 'linear-gradient(135deg, #9e373a, #2b5f83)' }}
+              className="w-[100px] h-9 rounded-lg flex items-center justify-center text-white font-bold text-xs"
+              // style={{ background: 'linear-gradient(135deg, #9e373a, #2b5f83)' }}
             >
-              ACA
+              <img src={'https://ik.imagekit.io/HoneyJoe/drive-download-20260914T095007Z-1-001/8486f397-f186-42b7-89aa-1b83a85af28c-removebg-preview.png?updatedAt=1789396686083'} alt="" />
             </div>
-            <span className="font-semibold text-white hidden sm:block text-sm" style={{ fontFamily: 'Space Grotesk' }}>
+            {/* <span className="font-semibold text-white hidden sm:block text-sm" style={{ fontFamily: 'Space Grotesk' }}>
               Assoc. of Computer Application
-            </span>
+            </span> */}
           </div>
 
           {/* Desktop Links */}

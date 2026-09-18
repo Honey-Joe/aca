@@ -69,7 +69,7 @@ export default function Hero() {
             <span className="block text-white">Association of</span>
             <span className="block bg-clip-text text-transparent"
               style={{ backgroundImage: 'linear-gradient(90deg, #9e373a, #2b5f83, #9e373a)' }}>
-              Computer Application
+              Computer Applications
             </span>
           </h1>
         </div>
